@@ -82,8 +82,20 @@ void draw()
       stroke(255, 0, 0); // draw line red
       strokeWeight(4);  // 4px wide thickness
       Rectangle bounds = getButtonLocation(i);
+      // NOTE: processing is using the "Painter Algorithm" to draw layers, so the last drawn is the closest to the front
+      // therefore sometimes the line might appear "below" some other squares because of how the loop runs.
       line(bounds.x + bounds.width / 2.0, bounds.y + bounds.height / 2.0, mouseX, mouseY);
-      // now reset all line params for all other lines in the scene
+      
+      // indicator if the cursor is over the button
+      if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
+         // the cursor is within "clicking" range
+         stroke(255, 0, 0);
+         strokeWeight(5);
+         noFill();
+         rect(bounds.x, bounds.y, bounds.width, bounds.height);
+      }
+      
+      // now reset all drawing params for the other lines in the scene
       stroke(0); // keep all other lines white
       strokeWeight(1);  // default line thickness
     }
