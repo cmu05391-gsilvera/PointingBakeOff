@@ -75,8 +75,19 @@ void draw()
   fill(255); //set fill color to white
   text((trialNum + 1) + " of " + trials.size(), 40, 20); //display what trial the user is on
 
-  for (int i = 0; i < 16; i++)// for all button
+  for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
+    if(i == trials.get(trialNum)){
+      // draw line from click-block to mouse cursor
+      stroke(255, 0, 0); // draw line red
+      strokeWeight(4);  // 4px wide thickness
+      Rectangle bounds = getButtonLocation(i);
+      line(bounds.x + bounds.width / 2.0, bounds.y + bounds.height / 2.0, mouseX, mouseY);
+      // now reset all line params for all other lines in the scene
+      stroke(0); // keep all other lines white
+      strokeWeight(1);  // default line thickness
+    }
+  }
 
   //fill(255, 0, 0, 200); // set fill color to translucent red
   //ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
