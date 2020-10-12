@@ -75,11 +75,24 @@ void draw()
   fill(255); //set fill color to white
   text((trialNum + 1) + " of " + trials.size(), 40, 20); //display what trial the user is on
 
-  for (int i = 0; i < 16; i++)// for all button
+  for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
+    if(i == trials.get(trialNum)){
+      Rectangle bounds = getButtonLocation(i);
+      
+      // indicator if the cursor is over the button
+      if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
+         // the cursor is within "clicking" range
+         
+         rect(bounds.x, bounds.y, bounds.width, bounds.height);
+         fill(255, 0, 0, 200);
+         ellipse(mouseX, mouseY, 10, 10); // draw cursor as a red circle
+      }
+    }
+  }
 
-  fill(255, 0, 0, 200); // set fill color to translucent red
-  ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
+  //fill(255, 0, 0, 200); // set fill color to translucent red
+  //ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
 }
 
 void mousePressed() // test to see if hit was in target!
