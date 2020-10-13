@@ -51,11 +51,18 @@ void setup()
   frame.setLocation(0,0); // put window in top left corner of screen (doesn't always work)
 }
 
-
+void heatmap(int resolution){
+  Rectangle bounds = getButtonLocation(trials.get(trialNum));
+  for(int i = 0; i < resolution; i++){
+    int radius = 20 * resolution * (i+1);
+    fill(255 - i * (255.0 / resolution), 0, 0, 50);
+    ellipse(bounds.x + 0.5*bounds.width, bounds.y+0.5*bounds.height, radius, radius);
+  }
+}
 void draw()
 {
   background(0); //set background to black
-
+  
   if (trialNum >= trials.size()) //check to see if test is over
   {
     float timeTaken = (finishTime-startTime) / 1000f;
@@ -72,9 +79,12 @@ void draw()
     return; //return, nothing else to do now test is over
   }
 
+  // draw the heatmap behind all the buttons
+  heatmap(10);
+
   fill(255); //set fill color to white
   text((trialNum + 1) + " of " + trials.size(), 40, 20); //display what trial the user is on
-
+  
   for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
     if(i == trials.get(trialNum)){
