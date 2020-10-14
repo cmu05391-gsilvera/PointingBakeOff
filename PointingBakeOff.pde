@@ -169,7 +169,7 @@ if (trialNum >= trials.size()) //if task is over, just return
   Rectangle bounds = getButtonLocation(trials.get(trialNum));
 
  //check to see if mouse cursor is inside button 
-  if ((key == "A")) // test to see if hit was within bounds
+  if ((key == 'A')) // test to see if hit was within bounds
   {
     System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
     hits++; 
