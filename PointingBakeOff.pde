@@ -153,7 +153,7 @@ void mouseDragged()
 void keyPressed() 
 {
   
-  if (trialNum >= trials.size()) //if task is over, just return
+if (trialNum >= trials.size()) //if task is over, just return
     return;
 
   if (trialNum == 0) //check if first click, if so, start timer
@@ -165,16 +165,23 @@ void keyPressed()
     //write to terminal some output. Useful for debugging too.
     println("we're done!");
   }
-  
-  
-  
-  Rectangle getButtonLocation(int i) //for a given button ID, what is its location and size
-{
-   int x = (i % 4) * (padding + buttonSize) + margin;
-   int y = (i / 4) * (padding + buttonSize) + margin;
-   return new Rectangle(x, y, buttonSize, buttonSize);
-}
-  //can use the keyboard if you wish
-  //https://processing.org/reference/keyTyped_.html
-  //https://processing.org/reference/keyCode.html
-}
+
+  Rectangle bounds = getButtonLocation(trials.get(trialNum));
+
+ //check to see if mouse cursor is inside button 
+  if ((key == "A")) // test to see if hit was within bounds
+  {
+    System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
+    hits++; 
+  } 
+  else
+  {
+    System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
+    misses++;
+  }
+
+  trialNum++; //Increment trial number
+
+  //in this example code, we move the mouse back to the middle
+  //robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
+}  
