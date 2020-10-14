@@ -152,6 +152,28 @@ void mouseDragged()
 
 void keyPressed() 
 {
+  
+  if (trialNum >= trials.size()) //if task is over, just return
+    return;
+
+  if (trialNum == 0) //check if first click, if so, start timer
+    startTime = millis();
+
+  if (trialNum == trials.size() - 1) //check if final click
+  {
+    finishTime = millis();
+    //write to terminal some output. Useful for debugging too.
+    println("we're done!");
+  }
+  
+  
+  
+  Rectangle getButtonLocation(int i) //for a given button ID, what is its location and size
+{
+   int x = (i % 4) * (padding + buttonSize) + margin;
+   int y = (i / 4) * (padding + buttonSize) + margin;
+   return new Rectangle(x, y, buttonSize, buttonSize);
+}
   //can use the keyboard if you wish
   //https://processing.org/reference/keyTyped_.html
   //https://processing.org/reference/keyCode.html
