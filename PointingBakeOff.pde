@@ -77,11 +77,11 @@ void draw()
 
   for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
+    Rectangle bounds = getButtonLocation(i);
     if(i == trials.get(trialNum)){
       // draw line from click-block to mouse cursor
       stroke(255, 0, 0); // draw line red
       strokeWeight(4);  // 4px wide thickness
-      Rectangle bounds = getButtonLocation(i);
       // NOTE: processing is using the "Painter Algorithm" to draw layers, so the last drawn is the closest to the front
       // therefore sometimes the line might appear "below" some other squares because of how the loop runs.
       line(bounds.x + bounds.width / 2.0, bounds.y + bounds.height / 2.0, mouseX, mouseY);
@@ -94,11 +94,22 @@ void draw()
          noFill();
          rect(bounds.x, bounds.y, bounds.width, bounds.height);
       }
-      
       // now reset all drawing params for the other lines in the scene
       stroke(0); // keep all other lines white
       strokeWeight(1);  // default line thickness
     }
+    else if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
+       System.out.println("trialNum " + trialNum + " i " + i + " trials " + trials);
+       // the cursor is within "clicking" range
+       stroke(0, 255, 0);
+       strokeWeight(5);
+       noFill();
+       rect(bounds.x, bounds.y, bounds.width, bounds.height);
+       // now reset all drawing params for the other lines in the scene
+       stroke(0); // keep all other lines white
+       strokeWeight(1);  // default line thickness
+    }
+    
   }
 
   //fill(255, 0, 0, 200); // set fill color to translucent red
