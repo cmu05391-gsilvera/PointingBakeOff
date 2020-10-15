@@ -4,8 +4,15 @@ import java.awt.Robot;
 import java.util.ArrayList;
 import java.util.Collections;
 import processing.core.PApplet;
+import processing.sound.*;
 
 //when in doubt, consult the Processsing reference: https://processing.org/reference/
+
+// follow this to install sound library: https://poanchen.github.io/blog/2016/11/15/how-to-add-background-music-in-processing-3.0
+SoundFile good_music, bad_music;
+String good_hit_fn = "good_hit.mp3";
+String bad_hit_fn = "bad_hit.mp3";
+String good_path, bad_path;
 
 int margin = 200; //set the margin around the squares
 final int padding = 50; // padding between buttons and also their width/height
@@ -47,7 +54,10 @@ void setup()
 
   Collections.shuffle(trials); // randomize the order of the buttons
   System.out.println("trial order: " + trials);
-  
+  good_path =sketchPath(good_hit_fn);
+  good_music = new SoundFile(this, good_path);
+  bad_path =sketchPath(bad_hit_fn);
+  bad_music = new SoundFile(this, bad_path);
   frame.setLocation(0,0); // put window in top left corner of screen (doesn't always work)
 }
 
@@ -126,11 +136,13 @@ void mousePressed() // test to see if hit was in target!
   if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
   {
     System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
+    good_music.play();
     hits++; 
   } 
   else
   {
     System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
+    bad_music.play();
     misses++;
   }
 
