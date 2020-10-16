@@ -77,6 +77,18 @@ void draw()
 
   for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
+    Rectangle bounds = getButtonLocation(i);
+    if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
+       System.out.println("trialNum " + trialNum + " i " + i + " trials " + trials);
+       // the cursor is within "clicking" range
+       stroke(0, 255, 0);
+       strokeWeight(5);
+       noFill();
+       rect(bounds.x, bounds.y, bounds.width, bounds.height);
+       // now reset all drawing params for the other lines in the scene
+       stroke(0); // keep all other lines white
+       strokeWeight(1);  // default line thickness
+    }
   }
   // Draw indicator for hovering over the button
   Rectangle bounds = getButtonLocation(trials.get(trialNum));
