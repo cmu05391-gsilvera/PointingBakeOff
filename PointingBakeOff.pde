@@ -78,7 +78,13 @@ void draw()
   for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
     if(i == trials.get(trialNum)){
+      // draw line from click-block to mouse cursor
+      stroke(255, 0, 0); // draw line red
+      strokeWeight(4);  // 4px wide thickness
       Rectangle bounds = getButtonLocation(i);
+      // NOTE: processing is using the "Painter Algorithm" to draw layers, so the last drawn is the closest to the front
+      // therefore sometimes the line might appear "below" some other squares because of how the loop runs.
+      line(bounds.x + bounds.width / 2.0, bounds.y + bounds.height / 2.0, mouseX, mouseY);
       
       // indicator if the cursor is over the button
       if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
