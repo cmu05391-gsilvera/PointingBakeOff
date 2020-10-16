@@ -78,27 +78,7 @@ void draw()
   for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
     Rectangle bounds = getButtonLocation(i);
-    if(i == trials.get(trialNum)){
-      // draw line from click-block to mouse cursor
-      stroke(255, 0, 0); // draw line red
-      strokeWeight(4);  // 4px wide thickness
-      // NOTE: processing is using the "Painter Algorithm" to draw layers, so the last drawn is the closest to the front
-      // therefore sometimes the line might appear "below" some other squares because of how the loop runs.
-      line(bounds.x + bounds.width / 2.0, bounds.y + bounds.height / 2.0, mouseX, mouseY);
-      
-      // indicator if the cursor is over the button
-      if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
-         // the cursor is within "clicking" range
-         stroke(255, 0, 0);
-         strokeWeight(5);
-         noFill();
-         rect(bounds.x, bounds.y, bounds.width, bounds.height);
-      }
-      // now reset all drawing params for the other lines in the scene
-      stroke(0); // keep all other lines white
-      strokeWeight(1);  // default line thickness
-    }
-    else if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
+    if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
        System.out.println("trialNum " + trialNum + " i " + i + " trials " + trials);
        // the cursor is within "clicking" range
        stroke(0, 255, 0);
@@ -109,10 +89,25 @@ void draw()
        stroke(0); // keep all other lines white
        strokeWeight(1);  // default line thickness
     }
-    
   }
-
-  //fill(255, 0, 0, 200); // set fill color to translucent red
+  // Draw indicator for hovering over the button
+  Rectangle bounds = getButtonLocation(trials.get(trialNum));
+  // indicator if the cursor is over the button
+  if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
+     // the cursor is within "clicking" range
+     fill(255, 0, 0); // RED for within target
+     rect(bounds.x, bounds.y, bounds.width, bounds.height);
+  }
+   
+  // draw line from click-block to mouse cursor
+  stroke(255, 0, 0); // draw line red
+  strokeWeight(4);  // 4px wide thickness
+  Rectangle target = getButtonLocation(trials.get(trialNum));
+  // NOTE: processing is using the "Painter Algorithm" to draw layers, so the last drawn is the closest to the front
+  // therefore sometimes the line might appear "below" some other squares because of how the loop runs.
+  line(target.x + target.width / 2.0, target.y + target.height / 2.0, mouseX, mouseY);
+  
+  fill(255, 0, 0, 200); // set fill color to translucent red
   //ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
 }
 
@@ -163,9 +158,9 @@ Rectangle getButtonLocation(int i) //for a given button ID, what is its location
 void drawButton(int i)
 {
   Rectangle bounds = getButtonLocation(i);
-
+  noStroke();
   if (trials.get(trialNum) == i) // see if current button is the target
-    fill(0, 255, 255); // if so, fill cyan
+    fill(0, 255, 0); // if so, fill with green
   else
     fill(200); // if not, fill gray
 
@@ -186,7 +181,38 @@ void mouseDragged()
 
 void keyPressed() 
 {
-  //can use the keyboard if you wish
-  //https://processing.org/reference/keyTyped_.html
-  //https://processing.org/reference/keyCode.html
-}
+  
+if (trialNum >= trials.size()) //if task is over, just return
+    return;
+
+  if (trialNum == 0) //check if first click, if so, start timer
+    startTime = millis();
+
+  if (trialNum == trials.size() - 1) //check if final click
+  {
+    finishTime = millis();
+    //write to terminal some output. Useful for debugging too.
+    println("we're done!");
+  }
+
+  Rectangle bounds = getButtonLocation(trials.get(trialNum));
+
+ //check to see if mouse cursor is inside button 
+
+  if ((key == ' ') && (mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
+
+  {
+    System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
+    hits++; 
+  } 
+  else
+  {
+    System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
+    misses++;
+  }
+
+  trialNum++; //Increment trial number
+
+  //in this example code, we move the mouse back to the middle
+  //robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
+}  
