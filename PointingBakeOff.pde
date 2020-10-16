@@ -78,35 +78,28 @@ void draw()
   for (int i = 0; i < 16; i++){ // for all button
     drawButton(i); //draw button
     Rectangle bounds = getButtonLocation(i);
-    if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
-       System.out.println("trialNum " + trialNum + " i " + i + " trials " + trials);
+    // Draw indicator for hovering over the button
+    if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
        // the cursor is within "clicking" range
-       stroke(0, 255, 0);
-       strokeWeight(5);
-       noFill();
+       if(i == trials.get(trialNum))
+         fill(255, 0, 0); // RED for within target
+       else
+         fill(100); // dark grey for non-target squares
        rect(bounds.x, bounds.y, bounds.width, bounds.height);
-       // now reset all drawing params for the other lines in the scene
-       stroke(0); // keep all other lines white
-       strokeWeight(1);  // default line thickness
     }
-  }
-  // Draw indicator for hovering over the button
-  Rectangle bounds = getButtonLocation(trials.get(trialNum));
-  // indicator if the cursor is over the button
-  if(mouseX >= bounds.x && mouseX <= bounds.x + bounds.width && mouseY >= bounds.y && mouseY <= bounds.y + bounds.height){
-     // the cursor is within "clicking" range
-     fill(255, 0, 0); // RED for within target
-     rect(bounds.x, bounds.y, bounds.width, bounds.height);
+    if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
+       // the cursor is within "clicking" range
+       fill(255, 255, 0); // color yellow
+       rect(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
   }
    
   // draw line from click-block to mouse cursor
-  stroke(255, 0, 0); // draw line red
+  stroke(0, 0, 255); // draw BLUE line
   strokeWeight(4);  // 4px wide thickness
   Rectangle target = getButtonLocation(trials.get(trialNum));
-  // NOTE: processing is using the "Painter Algorithm" to draw layers, so the last drawn is the closest to the front
-  // therefore sometimes the line might appear "below" some other squares because of how the loop runs.
+  // NOTE: processing is using the "Painter Algorithm"
   line(target.x + target.width / 2.0, target.y + target.height / 2.0, mouseX, mouseY);
-  
   fill(255, 0, 0, 200); // set fill color to translucent red
   //ellipse(mouseX, mouseY, 20, 20); //draw user cursor as a circle with a diameter of 20
 }
@@ -160,9 +153,9 @@ void drawButton(int i)
   Rectangle bounds = getButtonLocation(i);
   noStroke();
   if (trials.get(trialNum) == i) // see if current button is the target
-    fill(0, 255, 0); // if so, fill with green
+    fill(0, 255, 0); // if so, fill with GREEN
   else
-    fill(200); // if not, fill gray
+    fill(200); // if not, fill LIGHT GREY
 
   rect(bounds.x, bounds.y, bounds.width, bounds.height); //draw button
 }
