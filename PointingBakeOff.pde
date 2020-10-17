@@ -18,7 +18,7 @@ int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 Robot robot; //initalized in setup 
 
-int numRepeats = 1; //sets the number of times each button repeats in the test
+int numRepeats = 3; //sets the number of times each button repeats in the test
 
 void setup()
 {
@@ -87,13 +87,12 @@ void draw()
          fill(100); // dark grey for non-target squares
        rect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
-    if(trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1)){
+    if((trialNum > 0 && trials.get(trialNum) != trials.get(trialNum - 1)) && (trialNum + 1 < 16 * numRepeats && i == trials.get(trialNum + 1))){
        // the cursor is within "clicking" range
        fill(255, 255, 0); // color yellow
        rect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
   }
-   
   // draw line from click-block to mouse cursor
   stroke(0, 0, 255); // draw BLUE line
   strokeWeight(4);  // 4px wide thickness
