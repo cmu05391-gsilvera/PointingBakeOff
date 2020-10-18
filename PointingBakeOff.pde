@@ -18,7 +18,7 @@ int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 Robot robot; //initalized in setup 
 
-int numRepeats = 3; //sets the number of times each button repeats in the test
+int numRepeats = 1; //sets the number of times each button repeats in the test
 
 void setup()
 {
@@ -71,6 +71,22 @@ void draw()
     text("Average time for each button + penalty: " + nf(((timeTaken)/(float)(hits+misses) + penalty),0,3) + " sec", width / 2, height / 2 + 140);
     return; //return, nothing else to do now test is over
   }
+  // draw legend
+  int l = 40;
+  int u = 15;
+  stroke(0);
+  fill(255);
+  text("Target: ", width * 0.8, height * 0.05);
+  fill(0, 255, 0); // color red
+  rect(width*0.9, height*0.05 - u, l, l);
+  fill(255);
+  text("Next: ", width * 0.8, height * 0.15);
+  fill(255, 255, 0); // color yellow
+  rect(width*0.9, height*0.15 - u, l, l);
+  fill(255);
+  text("Guideline: ", width * 0.8, height * 0.25);
+  fill(0, 0, 255); // color red
+  rect(width*0.9, height*0.25 - u, l, 10);
 
   fill(255); //set fill color to white
   text((trialNum + 1) + " of " + trials.size(), 40, 20); //display what trial the user is on
