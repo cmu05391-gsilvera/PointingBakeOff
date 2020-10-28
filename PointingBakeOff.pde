@@ -17,6 +17,9 @@ int finishTime = 0; //records the time of the final click
 int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 Robot robot; //initalized in setup 
+int mouseXBegin;
+int mouseYBegin;
+
 
 int numRepeats = 3; //sets the number of times each button repeats in the test
 
@@ -30,7 +33,8 @@ void setup()
   frameRate(60);
   ellipseMode(CENTER); //ellipses are drawn from the center (BUT RECTANGLES ARE NOT!)
   //rectMode(CENTER); //enabling will break the scaffold code, but you might find it easier to work with centered rects
-
+  mouseXBegin = mouseX;
+  mouseYBegin = mouseY;
   try {
     robot = new Robot(); //create a "Java Robot" class that can move the system cursor
   } 
@@ -50,7 +54,6 @@ void setup()
   
   frame.setLocation(0,0); // put window in top left corner of screen (doesn't always work)
 }
-
 
 void draw()
 {
@@ -136,20 +139,38 @@ void mousePressed() // test to see if hit was in target!
 
   Rectangle bounds = getButtonLocation(trials.get(trialNum));
 
- //check to see if mouse cursor is inside button 
-  if ((mouseX > bounds.x && mouseX < bounds.x + bounds.width) && (mouseY > bounds.y && mouseY < bounds.y + bounds.height)) // test to see if hit was within bounds
+  //check to see if mouse cursor is inside button
+  int is_good = 0;
+  int w = bounds.width;
+  int ht = bounds.height;
+  float t = (millis() - startTime);
+  if ((mouseX > bounds.x && mouseX < bounds.x + w) && (mouseY > bounds.y && mouseY < bounds.y + ht)) // test to see if hit was within bounds
   {
-    System.out.println("HIT! " + trialNum + " " + (millis() - startTime)); // success
+    //System.out.println("HIT! " + trialNum + " " + t); // success
     hits++; 
+    is_good = 1;
   } 
   else
   {
-    System.out.println("MISSED! " + trialNum + " " + (millis() - startTime)); // fail
+    //System.out.println("MISSED! " + trialNum + " " + t); // fail
     misses++;
   }
-
+  
   trialNum++; //Increment trial number
-
+  int a = trialNum;
+  int b = 1;// unique user ID
+  int c = mouseXBegin;
+  int d = mouseYBegin;
+  int e = bounds.x + int(0.5 * w);
+  int f = bounds.y + int(0.5 * ht);
+  int g = w;
+  float h = t;
+  int i = is_good;
+  System.out.println(a+","+b+","+c+","+d+","+e+","+f+","+g+","+h+","+i);
+  // start of the next session
+  mouseXBegin = mouseX;
+  mouseYBegin = mouseY;
+  startTime = millis();
   //in this example code, we move the mouse back to the middle
   //robot.mouseMove(width/2, (height)/2); //on click, move cursor to roughly center of window!
 }  
